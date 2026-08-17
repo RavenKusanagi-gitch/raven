@@ -2,6 +2,23 @@
 
 このファイルには、公開版AI日誌の変更だけを記録する。
 
+## [2.0.0] - 2026-08-18
+
+### 改善
+
+- 日次生成の実行主体を1つに固定し、入れ子AI、二重fill、競合schedulerを禁止
+- lockへphase、heartbeat、owner、主要pathを追加し、`RUN_BUSY`を診断可能にする契約へ更新
+- 追記型sourceを、取得済みbyte prefixのSHA-256が不変な場合だけ許可
+- digestをschema v4とし、meta-only入力除外、0件日の有効digest、決定論的retrieval indexを追加
+- full digestからcwd別の限定generation contextを作り、大規模入力で25%以下に抑える条件を追加
+- 検索索引、全task、全sourceを3 markerへpipelineが原子的に差し込む方式へ変更
+- `preflight → begin → digest → seal → generation-context → stage → fill → publish → audit` の9段階へ更新
+- 保存済みdigestだけを読むread-only `search`を追加
+- 日次自動実行は前日1日だけ、過去日は明示日付の手動入口だけで扱う契約へ変更
+- 日誌を、要約、AI別・協業、案件別振り返り、検索索引、全task、全sourceの読順へ更新
+- 必須受け入れ試験を34項目へ拡張
+- 架空例、README、検証記録をv2.0へ更新
+
 ## [1.1.0] - 2026-08-17
 
 ### 改善

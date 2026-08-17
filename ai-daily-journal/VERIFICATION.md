@@ -10,6 +10,28 @@
 - `PARTIAL`：安全に実装できた範囲はあるが、必須項目に未確認または未対応が残る
 - `BLOCKED`：安全、権限、ログ、保存先、意味統合の実行主体などが不足し、主要経路を作れない
 
+## 2026-08-18 v2.0 公開契約確認
+
+v2.0は、作者環境で稼働している停止耐性、限定context、決定論的差し込み、検索導線を、個人環境へ依存しない構築条件へ置き換えた版である。
+
+確認済み：
+
+- Codex向けとClaude Code向けの本文契約が、AI名を除いて一致
+- `schema_version: 4`、9段階pipeline、phase/heartbeat付きlock、append-only source prefix検証を明記
+- generation contextへ全taskと全sourceを入れず、3 markerをpipelineが一度だけ埋める契約を明記
+- 0件日、同日skip、同時実行、競合scheduler、空の既存成果物、seal後変更、publish後auditの失敗条件を明記
+- 保存済みdigestだけを読むread-only `search`と、日付／AI／cwd／outcome／語句の絞り込みを明記
+- 公開ファイルに作者の絶対パス、実ログ、顧客情報、認証情報がないことを静的検査
+- 作者環境のschema v4実装では回帰試験38件、実日次runのpublish後audit、146 task／42 sourceの完全差し込み、generation context 5.82%、検索結果から公開日誌への逆引きを確認
+
+未確認：
+
+- v2.0の構築プロンプトを、第三者所有PCの新規環境で最後まで実行した結果
+- Windows／Linux、将来版のAIログschema、各AIサービスの認証・自動実行仕様
+- 実際に登録した日次自動実行の、利用者ごとの指定時刻発火
+
+このため、公開文書と作者環境の実装根拠は `PASS`、第三者環境を含む公開版全体は `PARTIAL` とする。プロンプトを実行した各PCでは、34項目の受け入れ試験で改めて判定する。
+
 ## 2026-08-17 v1.0隔離試験
 
 公開commit `b5cc48a` を匿名取得し、本人の実ログ、Obsidian、既存自動化へ触れない試験領域で実行した。
@@ -101,6 +123,27 @@ Codexの初回試験では、スキーマ調査コマンドがraw本文をtermin
 | 失敗 | 空ファイル、未知スキーマ、同時実行、途中停止、元ログ変化で安全停止 |
 | 自動実行 | 毎朝7時、固定日付なし、次回補完、登録内容の再読込、同じ入口の手動試験 |
 | 完了報告 | 全項目をPASS／未確認／未対応で分け、証拠パスと残るリスクを記載 |
+
+## v2.0の必須受け入れ領域
+
+| 領域 | 合格に必要な証拠 |
+| --- | --- |
+| 実行主体 | 日次生成の所有者が1つで、入れ子AI、二重fill、競合schedulerがない |
+| 環境 | OS、timezone、保存先、ログ取得元、自動実行方法を実物から確認 |
+| 取得 | provider別の実在path、source数、event数、task数、対応schemaを記録 |
+| task境界 | meta-only入力を除外し、実依頼、操作、最終応答、outcome、sourceを対応付け |
+| 安全 | 元ログの取得済みprefix不変、秘密値が日誌、digest、terminal、logs、test outputへ出ない |
+| digest | schema v4、source manifest、retrieval index、0件日、seal後hash固定 |
+| source追記 | 取得済みprefix不変の追記だけ許可し、短縮、置換、prefix変更を拒否 |
+| 生成 | full digestではなく限定generation contextだけをAIへ渡し、大規模fixtureで25%以下 |
+| 差し込み | 索引、全task、全sourceをseal済みdigestから原子的に差し込み、完全一致 |
+| lock | token、owner、phase、heartbeatを持ち、RUN_BUSYを診断できる |
+| 保存 | stage生成、既存非上書き、原子的publish、公開後audit |
+| 失敗 | 空成果物、未知schema、同時実行、途中停止、seal後変更で安全停止 |
+| 検索 | 保存済みdigestだけをread-only検索し、日誌へ逆引きできる |
+| 自動実行 | 動的な前日1日分、実行主体1つ、登録内容再読込、同じ入口の手動試験 |
+| 完了報告 | 34項目をPASS／FAIL／未確認／対象外で分け、証拠と残るriskを記載 |
+
 
 ## 保証しないこと
 
