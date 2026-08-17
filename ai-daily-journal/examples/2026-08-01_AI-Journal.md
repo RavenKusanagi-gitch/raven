@@ -1,7 +1,12 @@
 ---
 date: 2026-08-01
+timezone: Asia/Tokyo
+generated_at: 2026-08-02T07:00:12+09:00
 type: AI Daily Journal
 sample: true
+sources:
+  codex: 取得済み
+  claude_code: 取得済み
 ---
 
 # AI Daily Journal
@@ -26,9 +31,8 @@ sample: true
 
 ## 作ったもの・進めたこと
 
-- 商品紹介ページの申込ボタン
-- 送信失敗時の案内表示
-- 申込導線に関する自動テスト2件
+- AIによる報告：商品紹介ページの申込ボタンと、送信失敗時の案内表示を変更した
+- 実物で確認：申込導線に関する自動テスト2件がPASSした
 
 ## 変更・修正したこと
 
@@ -44,3 +48,19 @@ sample: true
 
 1. 実端末でボタンと失敗表示を確認する
 2. 公開後に申込完了までの到達数を計測する
+
+## AI別作業履歴
+
+### Codex
+
+- `codex-session-01`：ボタン文言と失敗表示を変更。AIは完了を報告。自動テストの実行はこのsessionでは未確認
+
+### Claude Code
+
+- `claude-session-01`：変更内容を確認し、失敗表示のテストを追加。自動テスト2件のPASSを実行結果から確認
+
+## 元資料
+
+- Codex：1 source／1 task／取得済み
+- Claude Code：1 source／1 task／取得済み
+- source識別子：`codex-session-01`、`claude-session-01`
